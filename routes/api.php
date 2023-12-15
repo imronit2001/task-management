@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /** Route to create new task */
-Route::get("/create-new-task",[TaskController::class,'createNewTask']);
+Route::post("/create-new-task",[TaskController::class,'createNewTask']);
 
 /** Route to list all task */
 Route::get("/list-all-task",[TaskController::class,'listAllTask']);

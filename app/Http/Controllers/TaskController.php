@@ -15,8 +15,7 @@ class TaskController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'title' => 'required',
-                'description' => 'required',
-                'status' => 'required',
+                'description' => 'required'
             ]);
 
             if ($validator->fails()) {
