@@ -27,7 +27,7 @@
         </div>
     </nav>
     <div class=" m-0 w-100 row p-4">
-        <div class="table-responsive col-7">
+        <div class="table-responsive col-8">
             <div class="d-flex justify-content-between align-items-center p-2">
                 <h4 class="">All Tasks</h4>
                 <div class="d-flex justify-content-between align-items-center">
@@ -185,6 +185,10 @@
         // Create task
         $('#create-task-form').on('submit', function(e) {
             e.preventDefault();
+            // disable button
+            $('#create-btn').attr('disabled', true);
+            // set button text to loading...
+            $('#create-btn').html('Creating...');
             let title = $('#title').val();
             let description = $('#description').val();
             $.ajax({
@@ -198,6 +202,10 @@
                 success: function(response) {
                     console.log(response);
                     fetchAllTasks();
+                    // enable button
+                    $('#create-btn').attr('disabled', false);
+                    // set button text to Create Task
+                    $('#create-btn').html('Create Task');
                 }
             });
         });
@@ -205,6 +213,10 @@
         // Update task
         $('#update-task-form').on('submit', function(e) {
             e.preventDefault();
+            // disable button
+            $('#update-btn').attr('disabled', true);
+            // set button text to loading...
+            $('#update-btn').html('Updating...');
             let id = $('#update-id').val();
             let title = $('#update-title').val();
             let description = $('#update-description').val();
@@ -222,6 +234,10 @@
                 success: function(response) {
                     console.log(response);
                     fetchAllTasks();
+                    // enable button
+                    $('#update-btn').attr('disabled', false);
+                    // set button text to Update Task
+                    $('#update-btn').html('Update Task');
                 }
             });
         });
