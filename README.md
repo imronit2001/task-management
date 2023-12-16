@@ -1,5 +1,5 @@
 # Task Management System (Laravel)
-![Project Logo](https://github.com/imronit2001/task-management/home.png)
+![Project Logo](home.png)
 
 > By Ronit Singh, Web Team Lead at [Nextgen Techno Ventures Pvt Ltd](https://nextgentechno.in/)
 
