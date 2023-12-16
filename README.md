@@ -28,8 +28,8 @@
     ```php artisan serve```
 
 ## Screenshots
-![Project Logo](https://github.com/imronit2001/task-management/home.png)
-![Project Logo](https://github.com/imronit2001/task-management/filter-status.png)
-![Project Logo](https://github.com/imronit2001/task-management/filter.png)
-![Project Logo](https://github.com/imronit2001/task-management/update.png)
-![Project Logo](https://github.com/imronit2001/task-management/database-schema.png)
+![Project Logo](home.png)
+![Project Logo](filter-status.png)
+![Project Logo](filter.png)
+![Project Logo](update.png)
+![Project Logo](database-schema.png)
