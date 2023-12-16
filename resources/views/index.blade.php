@@ -62,11 +62,11 @@
                 <h4>Create New Task</h4>
                 <div class="form-group my-2">
                     <label>Title</label>
-                    <input type="text" id="title" placeholder="Enter title" class="form-control">
+                    <input type="text" maxlength="100" required id="title" placeholder="Enter title" class="form-control">
                 </div>
                 <div class="form-group my-2">
                     <label>Description</label>
-                    <input type="text" id="description" placeholder="Enter description" class="form-control">
+                    <input type="text" required id="description" placeholder="Enter description" class="form-control">
                 </div>
                 <div class="form-group my-2">
                     <button type="submit" id="create-btn" class="btn btn-primary">Create Task</button>
@@ -74,17 +74,18 @@
             </form>
             <form id="update-task-form" class="d-none">
                 <input type="hidden" id="update-id">
+                <h4>Update Task</h4>
                 <div class="form-group my-2">
                     <label>Title</label>
-                    <input type="text" id="update-title" placeholder="Enter title" class="form-control">
+                    <input type="text" required id="update-title" placeholder="Enter title" class="form-control">
                 </div>
                 <div class="form-group my-2">
                     <label>Description</label>
-                    <input type="text" id="update-description" placeholder="Enter description" class="form-control">
+                    <input type="text" required id="update-description" placeholder="Enter description" class="form-control">
                 </div>
                 <div class="form-group my-2">
                     <label>Status</label>
-                    <select id="update-status" class="form-control">
+                    <select id="update-status" required class="form-control">
                         <option value="Pending">Pending</option>
                         <option value="Completed">Completed</option>
                     </select>
@@ -96,6 +97,15 @@
             </form>
         </div>
     </div>
+    <footer>
+        <div class="container-fluid bg-light fixed-bottom">
+            <div class="row">
+                <div class="col-12 text-center py-2">
+                    <p class="m-0">Developed by <a href="https://imronit2001.github.io/ronit/" target="_blank">Ronit Singh</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script>
         function formatDate(originalTimestamp) {
