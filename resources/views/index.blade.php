@@ -26,8 +26,19 @@
             <a class="navbar-brand px-4" href="#">Task Management</a>
         </div>
     </nav>
-    <div class=" m-0 w-100 row">
+    <div class=" m-0 w-100 row p-4">
         <div class="table-responsive col-7">
+            <div class="d-flex justify-content-between align-items-center p-2">
+                <h4 class="">All Tasks</h4>
+                <div class="d-flex justify-content-between align-items-center">
+                    <select id="filter-status" class="form-control mx-2" onchange="fetchAllTasks();">
+                        <option value="" selected>All Task</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                    <input type="date" id="filter-date" class="form-control mx-2" onchange="fetchAllTasks();">
+                </div>
+            </div>
             <table class="table table-hover">
                 <thead>
                     <th>#</th>
@@ -41,9 +52,14 @@
 
                 </tbody>
             </table>
+            <div id="loading" class="d-flex justify-content-center align-items-center flex-column">
+                <img src="https://media.tenor.com/JBgYqrobdxsAAAAi/loading.gif" width="50px" height="50px" alt="">
+                <p>Loading...!!!</p>
+            </div>
         </div>
         <div class="col-4">
             <form id="create-task-form">
+                <h4>Create New Task</h4>
                 <div class="form-group my-2">
                     <label>Title</label>
                     <input type="text" id="title" placeholder="Enter title" class="form-control">
@@ -54,6 +70,28 @@
                 </div>
                 <div class="form-group my-2">
                     <button type="submit" id="create-btn" class="btn btn-primary">Create Task</button>
+                </div>
+            </form>
+            <form id="update-task-form" class="d-none">
+                <input type="hidden" id="update-id">
+                <div class="form-group my-2">
+                    <label>Title</label>
+                    <input type="text" id="update-title" placeholder="Enter title" class="form-control">
+                </div>
+                <div class="form-group my-2">
+                    <label>Description</label>
+                    <input type="text" id="update-description" placeholder="Enter description" class="form-control">
+                </div>
+                <div class="form-group my-2">
+                    <label>Status</label>
+                    <select id="update-status" class="form-control">
+                        <option value="Pending">Pending</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+                <div class="form-group my-2">
+                    <button type="submit" id="update-btn" class="btn btn-primary">Update Task</button>
+                    <button type="button" onclick="fetchAllTasks();" class="btn btn-danger">Cancel</button>
                 </div>
             </form>
         </div>
@@ -87,9 +125,17 @@
         fetchAllTasks();
 
         async function fetchAllTasks() {
+            $('#loading').html(`<img src="https://media.tenor.com/JBgYqrobdxsAAAAi/loading.gif" width="50px" height="50px" alt=""><p>Loading...!!!</p>`);
+            $('#taskBody').html(``);
+            $("#create-task-form").trigger("reset");
+            $("#update-task-form").trigger("reset");
+            $('#create-task-form').removeClass('d-none');
+            $('#update-task-form').addClass('d-none');
+            let filterStatus = $('#filter-status').val();
+            let filterDate = $('#filter-date').val();
             // Get all tasks
             $.ajax({
-                url: '/api/list-all-task',
+                url: '/api/list-all-task?status=' + filterStatus + '&date=' + filterDate,
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
@@ -101,7 +147,7 @@
                                 <td>${formatDate(task.created_at)}</td>
                                 <td>${task.title}</td>
                                 <td>${task.description}</td>
-                                <td>${task.status}</td>
+                                <td class="${task.status=='Pending'?'text-danger':'text-success'}">${task.status}</td>
                                 <td>
                                     <button class="btn btn-sm btn-primary" onclick="updateTask('${task.id}','${task.title}','${task.description}','${task.status}')">Update</button>
                                     <button class="btn btn-sm btn-danger" onclick="deleteTask('${task.id}');">Delete</button>
@@ -109,8 +155,21 @@
                             </tr>`;
                     });
                     $('#taskBody').html(html);
+                    if(response.data.length==0)
+                        $('#loading').html(`<p>No Task Found</p>`);
+                    else
+                        $('#loading').html(``);
                 }
             });
+        }
+
+        function updateTask(id, title, description, status) {
+            $('#create-task-form').addClass('d-none');
+            $('#update-task-form').removeClass('d-none');
+            $('#update-title').val(title);
+            $('#update-description').val(description);
+            $('#update-status').val(status);
+            $('#update-id').val(id);
         }
 
         // Create task
@@ -124,6 +183,30 @@
                 data: {
                     title: title,
                     description: description,
+                },
+                dataType: 'json',
+                success: function(response) {
+                    console.log(response);
+                    fetchAllTasks();
+                }
+            });
+        });
+
+        // Update task
+        $('#update-task-form').on('submit', function(e) {
+            e.preventDefault();
+            let id = $('#update-id').val();
+            let title = $('#update-title').val();
+            let description = $('#update-description').val();
+            let status = $('#update-status').val();
+            $.ajax({
+                url: '/api/update-task',
+                type: 'POST',
+                data: {
+                    id: id,
+                    title: title,
+                    description: description,
+                    status: status
                 },
                 dataType: 'json',
                 success: function(response) {
